@@ -4,8 +4,68 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "557a718610136a3288bf29d68c08fc59",
+    "content-hash": "79eb519a63438f97543c6a8e644dca2f",
     "packages": [
+        {
+            "name": "bosnadev/repositories",
+            "version": "0.13",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/bosnadev/repository.git",
+                "reference": "3a289a137e27ac6b795852a0d72c509a51b70a26"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/bosnadev/repository/zipball/3a289a137e27ac6b795852a0d72c509a51b70a26",
+                "reference": "3a289a137e27ac6b795852a0d72c509a51b70a26",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/console": "^5.2",
+                "illuminate/database": "^5.2",
+                "illuminate/filesystem": "^5.2",
+                "illuminate/support": "^5.2",
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "dev-master@dev"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Bosnadev\\": "src/Bosnadev/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Maarten Paauw",
+                    "email": "maartenpaauw@gmail.com"
+                },
+                {
+                    "name": "Mirza Pasic",
+                    "email": "mirza@bosnadev.com"
+                }
+            ],
+            "description": "Laravel Repositories",
+            "homepage": "https://bosnadev.com",
+            "keywords": [
+                "database",
+                "eloquent",
+                "laravel",
+                "repositories",
+                "repository"
+            ],
+            "time": "2016-08-19T13:21:55+00:00"
+        },
         {
             "name": "coduo/php-humanizer",
             "version": "2.0.0",
@@ -565,6 +625,69 @@
                 "storage"
             ],
             "time": "2017-02-09T11:33:58+00:00"
+        },
+        {
+            "name": "league/fractal",
+            "version": "0.15.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thephpleague/fractal.git",
+                "reference": "0546bd5c2aba414ba50c6ac676f507d42c6150a5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thephpleague/fractal/zipball/0546bd5c2aba414ba50c6ac676f507d42c6150a5",
+                "reference": "0546bd5c2aba414ba50c6ac676f507d42c6150a5",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4"
+            },
+            "require-dev": {
+                "illuminate/contracts": "~5.0",
+                "mockery/mockery": "~0.9",
+                "pagerfanta/pagerfanta": "~1.0.0",
+                "phpunit/phpunit": "~4.0",
+                "squizlabs/php_codesniffer": "~1.5",
+                "zendframework/zend-paginator": "~2.3"
+            },
+            "suggest": {
+                "illuminate/pagination": "The Illuminate Pagination component.",
+                "pagerfanta/pagerfanta": "Pagerfanta Paginator",
+                "zendframework/zend-paginator": "Zend Framework Paginator"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.13-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "League\\Fractal\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Phil Sturgeon",
+                    "email": "me@philsturgeon.uk",
+                    "homepage": "http://philsturgeon.uk/",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Handle the output of complex data structures ready for API output.",
+            "homepage": "http://fractal.thephpleague.com/",
+            "keywords": [
+                "api",
+                "json",
+                "league",
+                "rest"
+            ],
+            "time": "2016-12-28T01:30:30+00:00"
         },
         {
             "name": "monolog/monolog",
