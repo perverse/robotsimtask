@@ -54,7 +54,12 @@ class ApiResponseFormatter
             }
 
             if ($related_model) {
-                $nested_relationships = $related_model->getLoadedRelationships();
+                if (method_exists($related_model, 'getLoadedRelationships')) {
+                    $nested_relationships = $related_model->getLoadedRelationships();
+                } else {
+                    $nested_relationships = [];
+                }
+
                 $delete_index = array_search('pivot', $nested_relationships);
 
                 if ($delete_index !== false) {
@@ -120,9 +125,10 @@ class ApiResponseFormatter
 
             if ($full_class_name) {
                 $short_class_name = join('', array_slice(explode('\\', $full_class_name), -1));
-                $transformer = $this->app->make("App\Transformers\\" . $short_class_name . "Transformer");
+                $transformer_class = "App\Transformers\\" . $short_class_name . "Transformer";
 
-                if ($transformer) {
+                if (class_exists($transformer_class)) {
+                    $transformer = $this->app->make($transformer_class);
                     if (!empty($loaded_relations)) {
                         $this->fractal->parseIncludes($loaded_relations);
                     }

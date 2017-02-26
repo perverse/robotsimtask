@@ -17,7 +17,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::group(['prefix' => 'api', 'namespace' => 'App\Http\Controllers\Api'], function()
+Route::group(['namespace' => 'Api'], function()
 {
     Route::group(['prefix' => 'shop'], function()
     {

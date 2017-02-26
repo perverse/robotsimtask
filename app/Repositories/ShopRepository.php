@@ -2,7 +2,9 @@
 
 namespace App\Repositories;
 
-class ShopRepository extends Repository
+use App\Repositories\Contracts\ShopRepositoryInterface;
+
+class ShopRepository extends Repository implements ShopRepositoryInterface
 {
     public function useModel()
     {

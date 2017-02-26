@@ -3,7 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use App\Services\System\ApiResponseFormatter;
+use App\Services\ApiResponseFormatter;
 use App\Containers\ApiResponse as ServiceResponse;
 // @todo: make this a non-concrete type
 

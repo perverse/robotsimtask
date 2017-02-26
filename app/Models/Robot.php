@@ -2,9 +2,7 @@
 
 namespace App\Models;
 
-use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
-
-class Robot extends Eloquent
+class Robot extends Model
 {
     public $fillable = ['x', 'y', 'heading'];
 }

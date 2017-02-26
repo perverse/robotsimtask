@@ -2,9 +2,7 @@
 
 namespace App\Models;
 
-use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
-
-class Shop extends Eloquent
+class Shop extends Model
 {
     protected $collection = 'shops';
     public $fillable = ['width', 'height'];
