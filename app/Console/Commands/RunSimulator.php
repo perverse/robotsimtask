@@ -6,6 +6,7 @@ use App\Services\Contracts\SimulatorServiceInterface;
 use Illuminate\Console\Command;
 use Illuminate\Validation\Factory as Validator;
 use Illuminate\Support\MessageBag;
+use Coduo\PHPHumanizer\NumberHumanizer;
 
 class RunSimulator extends Command
 {
@@ -58,39 +59,24 @@ class RunSimulator extends Command
     public function handle()
     {
         $this->welcomeMessage();
-/*
+
         $shop_size = explode(" ", $this->getShopSize());
         $shop = [
             'width' => (int) $shop_size[0],
             'height' => (int) $shop_size[1]
         ];
 
+        $this->info(sprintf("Grid is size %s x %s", $shop['width'], $shop['height']));
+
         $num_robots = $this->getNumberRobots($shop);
         $shop['robots'] = $this->getRobots($num_robots, $shop);
-*/
-        $shop = [
-            'width' => 5,
-            'height' => 5,
-            'robots' => [
-                [
-                    'x' => 3,
-                    'y' => 3,
-                    'heading' => 'S',
-                    'commands' => 'LMM'
-                ],
-                [
-                    'x' => 4,
-                    'y' => 4,
-                    'heading' => 'N',
-                    'commands' => 'LMM'
-                ]
-            ]
-        ];
 
         $new_shop = $this->sim->simulate($shop);
         
-        $this->info("Final Shop State:");
-        $this->info(json_encode($new_shop));
+        $this->info("");
+        foreach ($new_shop['robots'] as $index => $robot) {
+            $this->info(sprintf("%s Robot's final position (%s,%s) and heading (%s)", NumberHumanizer::ordinalize($index + 1), $robot['x'], $robot['y'], $robot['heading']));
+        }
     }
 
     /**
@@ -197,7 +183,7 @@ class RunSimulator extends Command
 
     public function getRobotPosition($robot_num, $shop)
     {
-        $position = $this->ask(sprintf('( Robot #%s ) What position would you like Robot #%s to start in? [xpos:int ypos:int heading:N,E,W,S]', $robot_num, $robot_num));
+        $position = $this->ask(sprintf('( Robot #%s ) What position would you like the %s robot to start in? [xpos:int ypos:int heading:N,E,W,S]', $robot_num, NumberHumanizer::ordinalize($robot_num)));
         $max_x = $shop['width'] - 1;
         $max_y = $shop['height'] - 1;
 
@@ -215,6 +201,7 @@ class RunSimulator extends Command
             ]);
 
             if ($validator->passes()) {
+                $this->info(sprintf("%s Robot's initial position (%s,%s) and heading (%s)", NumberHumanizer::ordinalize($robot_num), $parsed_values['x'], $parsed_values['y'], $parsed_values['heading']));
                 return $parsed_values;
             } else {
                 $this->throwErrors($validator->errors());
@@ -229,9 +216,10 @@ class RunSimulator extends Command
 
     public function getRobotCommands($robot_num)
     {
-        $commands = $this->ask(sprintf('( Robot #%s ) Please enter movement commands for Robot #%s', $robot_num, $robot_num));
+        $commands = $this->ask(sprintf('( Robot #%s ) Please enter movement commands for the %s robot', $robot_num, NumberHumanizer::ordinalize($robot_num)));
 
         if (preg_match('/^[LRM]+$/', $commands)) {
+            $this->info(sprintf("%s Robot's set of commands: %s", NumberHumanizer::ordinalize($robot_num), $commands));
             return $commands;
         } else {
             $this->throwErrors("robot movement commands can only consist of a single string (no spaces) containing the characters 'L' (turn left), 'R' (turn right) and 'M' (move forward)");

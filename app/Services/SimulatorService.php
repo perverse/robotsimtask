@@ -120,8 +120,7 @@ class SimulatorService implements SimulatorServiceInterface
                     $new_positions->push($robot);
                 }
             });
-            echo "pass: $pass";
-            print_r($new_positions->all());
+
             $robots = $new_positions;
             // if you wanted to use this platform as the actual robot controller, you could queue up the $robots collection at this point
         }
@@ -140,6 +139,7 @@ class SimulatorService implements SimulatorServiceInterface
     {
         $sim = $this;
 
+        // action map of movement options
         $move_map = [
             'N' => function($robot) use (&$sim){
                 $new_y = $robot['y'] - 1;
@@ -156,8 +156,6 @@ class SimulatorService implements SimulatorServiceInterface
                 if ($new_x <= $sim->grid['x']['max']) {
                     $robot['x'] = $new_x;
                 }
-
-                echo "new robot: " . print_r($robot, true);
 
                 return $robot;
             },
@@ -181,6 +179,7 @@ class SimulatorService implements SimulatorServiceInterface
             }
         ];
 
+        // action map of turning options
         $heading_map = [
             'L' => function($robot) use (&$sim) {
                 $new_heading = $this->inverse_compass[$robot['heading']] - 1;
