@@ -20,7 +20,7 @@ class ShopTransformer extends TransformerAbstract
 
     public function includeRobots(Shop $item)
     {
-        $robots = $shop->robots;
+        $robots = $item->robots;
 
         return $this->collection($robots, new RobotTransformer);
     }

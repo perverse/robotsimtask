@@ -39,7 +39,7 @@ class ShopService implements ShopServiceInterface
 
             return $this->response->make(['success' => true, 'data' => $shop]);
         } else {
-            return $this->response->make(['success' => false, 'errors' => $validator->messages()]);
+            return $this->response->make(['success' => false, 'errors' => $validator->messages()->toArray()]);
         }
     }
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Services\Contracts\RobotServiceInterface;
+use Illuminate\Http\Request;
 
 class ShopRobotController extends Controller
 {
@@ -13,9 +14,9 @@ class ShopRobotController extends Controller
         $this->request = $request;
     }
 
-    public function create()
+    public function create($shop_id)
     {
-        return $this->robot->create($this->request->all());
+        return $this->robot->create($shop_id, $this->request->all());
     }
 
     public function update($shop_id, $robot_id)

@@ -56,6 +56,13 @@ class ApiResponseFormatter
             if ($related_model) {
                 if (method_exists($related_model, 'getLoadedRelationships')) {
                     $nested_relationships = $related_model->getLoadedRelationships();
+
+                    // this is a little janky... but hasnt been a problem with mysql, so patching for mongo for the moment
+                    foreach ($nested_relationships as $index => $rel) {
+                        if ($rel == $parent_nesting) {
+                            unset($nested_relationships[$index]);
+                        }
+                    }
                 } else {
                     $nested_relationships = [];
                 }
@@ -118,6 +125,8 @@ class ApiResponseFormatter
 
                 $model = $first;
             }
+
+            \Log::info(print_r($model, true));
 
             if (!empty($loaded_relations)) {
                 $loaded_relations = $this->getLoadedRelationshipsRecursive($model, $loaded_relations);
@@ -195,13 +204,11 @@ class ApiResponseFormatter
                     $ret = [];
                     break;
             }
-
-            $ret['messages'] = array_values($this->service_response->getMessages());
         } else {
             $ret['errors'] = array_values($this->service_response->getErrors());
         }
 
-        $ret['status'] = $this->service_response->getSuccess();
+        $ret['status'] = $this->service_response->getSuccess() ? "ok" : "error";
 
         return response()->json($ret, $this->service_response->getHttpResponseCode());
     }

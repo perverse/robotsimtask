@@ -13,6 +13,15 @@ class Model extends Eloquent
 
     public function getLoadedRelationships()
     {
-        return array_keys($this->relations);
+        $relations = array_keys($this->relations);
+
+        // pick up mongo embedded relations
+        foreach ($this->attributes as $index => $attribute) {
+            if (is_array($attribute)) {
+                $relations[] = $index;
+            }
+        }
+
+        return $relations;
     }
 }

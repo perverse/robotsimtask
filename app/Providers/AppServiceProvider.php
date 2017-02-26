@@ -25,6 +25,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->singleton('App\Services\Contracts\SimulatorServiceInterface', 'App\Services\SimulatorService');
         $this->app->singleton('App\Services\Contracts\ShopServiceInterface', 'App\Services\ShopService');
+        $this->app->singleton('App\Services\Contracts\RobotServiceInterface', 'App\Services\RobotService');
 
         $this->app->singleton('App\Repositories\Contracts\ShopRepositoryInterface', 'App\Repositories\ShopRepository');
     }

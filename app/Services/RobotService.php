@@ -4,7 +4,7 @@ namespace App\Services;
 
 use App\Services\Contracts\RobotServiceInterface;
 use App\Containers\ApiResponse;
-use App\Respositories\Contracts\ShopRepositoryInterface;
+use App\Repositories\Contracts\ShopRepositoryInterface;
 use Illuminate\Validation\Factory as Validator;
 
 class RobotService implements RobotServiceInterface
@@ -34,7 +34,7 @@ class RobotService implements RobotServiceInterface
         $validator = $this->getValidator($data);
 
         if ($validator->fails()) {
-            return $this->response->make(['success' => false, 'errors' => $validator->messages()]);
+            return $this->response->make(['success' => false, 'errors' => $validator->messages()->toArray()]);
         }
 
         $shop = $this->shop->find($shop_id);
@@ -53,7 +53,7 @@ class RobotService implements RobotServiceInterface
         $validator = $this->getValidator($data);
 
         if ($validator->fails()) {
-            return $this->response->make(['success' => false, 'errors' => $validator->messages()]);
+            return $this->response->make(['success' => false, 'errors' => $validator->messages()->toArray()]);
         }
 
         $shop = $this->shop->find($shop_id);
