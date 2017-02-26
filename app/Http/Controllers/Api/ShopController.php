@@ -31,4 +31,9 @@ class ShopController extends Controller
     {
         return $this->shop->destroy($shop_id);
     }
+
+    public function simulate($shop_id)
+    {
+        return $this->shop->simulate($shop_id);
+    }
 }

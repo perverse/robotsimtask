@@ -71,6 +71,7 @@ class RobotService implements RobotServiceInterface
             $robot->x = $data['x'];
             $robot->y = $data['y'];
             $robot->heading = $data['heading'];
+            $robot->commands = $data['commands'];
 
             $shop->robots()->save($robot); // should update existing model...
 

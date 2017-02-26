@@ -63,13 +63,13 @@ class ShopService implements ShopServiceInterface
 
     public function simulate($id)
     {
-        $shop = $this->shop->find($find);
+        $shop = $this->shop->find($id);
         $service = $this;
 
         if ($shop) {
             $shop_arr = $shop->toArray();
-            $new_shop = $this->sim->simulate($shop);
-            $new_robots = collect($new_robots);
+            $new_shop = $this->sim->simulate($shop->toArray());
+            $new_robots = collect($new_shop['robots']);
 
             $shop->robots->each(function($robot) use (&$new_robots, &$shop, &$service){
                 $new_data = $new_robots->first(function($data) use ($robot){

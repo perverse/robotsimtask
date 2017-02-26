@@ -126,8 +126,6 @@ class ApiResponseFormatter
                 $model = $first;
             }
 
-            \Log::info(print_r($model, true));
-
             if (!empty($loaded_relations)) {
                 $loaded_relations = $this->getLoadedRelationshipsRecursive($model, $loaded_relations);
             }
@@ -206,6 +204,10 @@ class ApiResponseFormatter
             }
         } else {
             $ret['errors'] = array_values($this->service_response->getErrors());
+
+            if ($this->service_response->getHttpResponseCode() == 404) {
+                $ret['errors'] = ['Resource Not Found.'];
+            }
         }
 
         $ret['status'] = $this->service_response->getSuccess() ? "ok" : "error";

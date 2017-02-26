@@ -13,7 +13,8 @@ class RobotTransformer extends TransformerAbstract
             'id' => $item->getKey(),
             'x' => $item->x,
             'y' => $item->y,
-            'heading' => $item->heading
+            'heading' => $item->heading,
+            'commands' => $item->commands
         ];
     }
 }

@@ -11,7 +11,7 @@ class ShopRepository extends Repository implements ShopRepositoryInterface
         return '\App\Models\Shop';
     }
 
-    public function saveRobot($shop, $robot)
+    public function updateRobot($shop, $robot)
     {
         return $shop->robots()->save($robot);
     }
