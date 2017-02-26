@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\System;
+namespace App\Services;
 
 use App\Containers\ApiResponse as ServiceResponse;
 use App\Fractal\Paginator\IlluminateSimplePaginatorAdapter;

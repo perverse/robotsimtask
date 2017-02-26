@@ -11,10 +11,11 @@ class ShopService implements ShopServiceInterface
     protected $shop;
     protected $validator;
 
-    public function __construct(ShopRepositoryInterface $shop, Validator $validator)
+    public function __construct(ShopRepositoryInterface $shop, Validator $validator, ServiceResponse $response)
     {
         $this->shop = $shop;
         $this->validator = $validator;
+        $this->response = $response;
     }
 
     public function create(array $data)
@@ -25,7 +26,10 @@ class ShopService implements ShopServiceInterface
         ]);
 
         if ($validator->passes()) {
-            
+            $shop = $this->shop->create($data);
+            return $this->response->make(['success' => true, 'data' => $shop]);
+        } else {
+            return $this->response->make(['success' => false, 'errors' => $validator->messages()]);
         }
     }
 
