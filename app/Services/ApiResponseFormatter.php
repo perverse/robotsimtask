@@ -11,6 +11,7 @@ use Illuminate\Contracts\Container\Container as ServiceContainer;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use App\Exceptions\ServiceResponseException;
 
+// @todo: make an interface for this...
 class ApiResponseFormatter
 {
     protected $service_response;

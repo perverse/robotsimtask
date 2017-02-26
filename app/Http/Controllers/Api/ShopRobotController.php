@@ -6,5 +6,8 @@ use App\Http\Controllers\Controller;
 
 class ShopRobotController extends Controller
 {
+    public function __construct()
+    {
 
+    }
 }

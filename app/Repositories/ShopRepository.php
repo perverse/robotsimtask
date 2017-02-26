@@ -8,4 +8,9 @@ class ShopRepository extends Repository
     {
         return '\App\Models\Shop';
     }
+
+    public function saveRobot($shop, $robot)
+    {
+        return $shop->robots()->save($robot);
+    }
 }
