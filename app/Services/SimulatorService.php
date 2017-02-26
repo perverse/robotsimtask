@@ -63,7 +63,7 @@ class SimulatorService implements SimulatorServiceInterface
 
     protected function setupCompass()
     {
-        $this->inverse_compass = array_flip($compass);
+        $this->inverse_compass = array_flip($this->compass);
     }
 
     public function simulate(array $shop)
@@ -75,6 +75,7 @@ class SimulatorService implements SimulatorServiceInterface
         $sim = $this;
 
         // our main loop - loops for maximum passes
+        
         for ($pass=1; $pass <= $max_passes; $pass++) {
             $new_positions = collect();
 
@@ -89,7 +90,9 @@ class SimulatorService implements SimulatorServiceInterface
                     $planned_position = $sim->getNewRobotPosition($robot, $command);
 
                     // check easy collisions
-                    if ($new_positions->only(['x' => $planned_position['x'], 'y' => $planned_position['y']])->count()) {
+                    if ($new_positions->contains(function($compare, $key) use (&$planned_position){
+                        return $compare['x'] == $planned_position['x'] && $compare['y'] == $planned_position['y'];
+                    })) {
                         // 2 robots moving to same space, throw exception
                         throw new RobotCollisionException(sprintf("Robot Collision Detected @ x: %s, y: %s, pass: %s", $planned_position['x'], $planned_position['y'], $pass));
                     }
@@ -99,11 +102,11 @@ class SimulatorService implements SimulatorServiceInterface
                     $potential_collision['heading'] = $sim->getOppositeHeading($robot['heading']);
 
                     // check last pass robots for head-on robots
-                    if ($robots->only([
-                        'x' => $potential_collision['x'],
-                        'y' => $potential_collision['y'],
-                        'heading' => $potential_collision['heading']
-                    ])->count()) {
+                    if ($robots->contains(function($compare, $value) use (&$potential_collision){
+                        return $compare['x'] == $potential_collision['x']
+                            && $compare['y'] == $potential_collision['y']
+                            && $compare['heading'] == $potential_collision['heading'];
+                    })) {
                         throw new RobotCollisionException(sprintf("Robot Collision Detected @ x: %s, y, %s, pass %s", $potential_collision['x'], $potential_collision['y'], $pass));
                     }
 
@@ -117,8 +120,10 @@ class SimulatorService implements SimulatorServiceInterface
                     $new_positions->push($robot);
                 }
             });
-
+            echo "pass: $pass";
+            print_r($new_positions->all());
             $robots = $new_positions;
+            // if you wanted to use this platform as the actual robot controller, you could queue up the $robots collection at this point
         }
 
         $shop['robots'] = $robots->all();
@@ -128,7 +133,7 @@ class SimulatorService implements SimulatorServiceInterface
 
     public function getRobotCommand($robot, $pass)
     {
-        return substr($robot, $pass - 1);
+        return substr($robot['commands'], $pass - 1, 1);
     }
 
     public function getNewRobotPosition($robot, $command)
@@ -148,9 +153,11 @@ class SimulatorService implements SimulatorServiceInterface
             'E' => function($robot) use (&$sim){
                 $new_x = $robot['x'] + 1;
 
-                if ($new_x >= $sim->grid['x']['max']) {
+                if ($new_x <= $sim->grid['x']['max']) {
                     $robot['x'] = $new_x;
                 }
+
+                echo "new robot: " . print_r($robot, true);
 
                 return $robot;
             },
@@ -163,10 +170,10 @@ class SimulatorService implements SimulatorServiceInterface
 
                 return $robot;
             },
-            'W' => function($robot){
+            'W' => function($robot) use (&$sim){
                 $new_x = $robot['x'] - 1;
 
-                if ($new_x <= $sim->grid['x']['min']) {
+                if ($new_x >= $sim->grid['x']['min']) {
                     $robot['x'] = $new_x;
                 }
 

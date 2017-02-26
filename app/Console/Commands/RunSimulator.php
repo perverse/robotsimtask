@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Services\Contracts\SimulatorServiceInterface;
 use Illuminate\Console\Command;
 use Illuminate\Validation\Factory as Validator;
 use Illuminate\Support\MessageBag;
@@ -23,15 +24,30 @@ class RunSimulator extends Command
     protected $description = 'Run coffee shop robot simulator.';
 
     /**
+     * Validator factory for verifying CLI inputs
+     *
+     * @var string
+     */
+    protected $validator;
+
+    /**
+     * Our shop simulator service
+     *
+     * @var string
+     */
+    protected $sim;
+
+    /**
      * Create a new command instance.
      *
      * @return void
      */
-    public function __construct(Validator $validator)
+    public function __construct(Validator $validator, SimulatorServiceInterface $sim)
     {
         parent::__construct();
 
         $this->validator = $validator;
+        $this->sim = $sim;
     }
 
     /**
@@ -42,6 +58,7 @@ class RunSimulator extends Command
     public function handle()
     {
         $this->welcomeMessage();
+/*
         $shop_size = explode(" ", $this->getShopSize());
         $shop = [
             'width' => (int) $shop_size[0],
@@ -49,7 +66,31 @@ class RunSimulator extends Command
         ];
 
         $num_robots = $this->getNumberRobots($shop);
-        $robot_commands = $this->getRobots($num_robots, $shop);
+        $shop['robots'] = $this->getRobots($num_robots, $shop);
+*/
+        $shop = [
+            'width' => 5,
+            'height' => 5,
+            'robots' => [
+                [
+                    'x' => 3,
+                    'y' => 3,
+                    'heading' => 'S',
+                    'commands' => 'LMM'
+                ],
+                [
+                    'x' => 4,
+                    'y' => 4,
+                    'heading' => 'N',
+                    'commands' => 'LMM'
+                ]
+            ]
+        ];
+
+        $new_shop = $this->sim->simulate($shop);
+        
+        $this->info("Final Shop State:");
+        $this->info(json_encode($new_shop));
     }
 
     /**
@@ -61,7 +102,6 @@ class RunSimulator extends Command
     {
         $this->info('');
         $this->info('Welcome to Nigels Coffee Shop Robot Controller Simulator!');
-        $this->info('');
     }
 
     /**
@@ -127,34 +167,37 @@ class RunSimulator extends Command
     public function getRobots($num_robots, $shop)
     {
         $positions_taken_matrix = []; // matrix should be quicker than using something like in_array
+        $robots = [];
 
         for ($i=0; $i<$num_robots; $i++) {
-            $this->robots[] = $this->spawnRobot($i+1, $shop, $positions_taken_matrix);
+            $robots[] = $this->spawnRobot($i+1, $shop, $positions_taken_index);
         }
+
+        return $robots;
     }
 
-    public function spawnRobot($robot_num, $shop, &$matrix)
+    public function spawnRobot($robot_num, $shop, &$index)
     {
-        $matrix_valid = false;
+        $index_valid = false;
 
         do {
             $new_robot = $this->getRobotPosition($robot_num, $shop);
 
-            if (!isset($matrix[$new_robot['x']][$new_robot['y']])) {
+            if (!isset($index[$new_robot['x'] . $new_robot['y']])) {
                 // robot position not taken, we can accept this guy.
-                $matrix[$new_robot['x']][$new_robot['y']] = 1;
-                $matrix_valid = true;
+                $index[$new_robot['x'] . $new_robot['y']] = 1;
+                $index_valid = true;
             }
-        } while ($matrix_valid === false);
+        } while ($index_valid === false);
 
-        $robot['commands'] = $this->getRobotCommands();
+        $new_robot['commands'] = $this->getRobotCommands($robot_num);
 
-        return $robot;
+        return $new_robot;
     }
 
     public function getRobotPosition($robot_num, $shop)
     {
-        $position = $this->ask(sprintf('(Robot %s) What position would you like this robot to start in? [xpos:int ypos:int heading:N,E,W,S]', $robot_num));
+        $position = $this->ask(sprintf('( Robot #%s ) What position would you like Robot #%s to start in? [xpos:int ypos:int heading:N,E,W,S]', $robot_num, $robot_num));
         $max_x = $shop['width'] - 1;
         $max_y = $shop['height'] - 1;
 
@@ -181,11 +224,18 @@ class RunSimulator extends Command
             $this->throwErrors("the position input must be in the format [xpos:int ypos:int heading:N,E,W,S]");
         }
 
-        return $this->spawnRobot($robot_num, $shop);
+        return $this->getRobotPosition($robot_num, $shop);
     }
 
-    public function getRobotCommands()
+    public function getRobotCommands($robot_num)
     {
+        $commands = $this->ask(sprintf('( Robot #%s ) Please enter movement commands for Robot #%s', $robot_num, $robot_num));
 
+        if (preg_match('/^[LRM]+$/', $commands)) {
+            return $commands;
+        } else {
+            $this->throwErrors("robot movement commands can only consist of a single string (no spaces) containing the characters 'L' (turn left), 'R' (turn right) and 'M' (move forward)");
+            return $this->getRobotCommands($robot_num);
+        }
     }
 }

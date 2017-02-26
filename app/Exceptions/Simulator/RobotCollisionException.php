@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Exceptions;
+namespace App\Exceptions\Simulator;
 
 use Exception;
 use Illuminate\Support\Collection;
