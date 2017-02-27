@@ -5,6 +5,7 @@ php:
 
 before_script:
   - echo "extension = mongo.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+  - echo $(phpenv version-name)
   - phpenv config-rm xdebug.ini
   - cp .env.travis .env
   - composer self-update
