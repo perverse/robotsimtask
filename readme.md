@@ -3,7 +3,8 @@
 
 This is a Laravel App designed to meet the business requirements of a coding task. The following readme is written for linux (and somewhat OSX at a stretch), Windows users will have to extrapolate - sorry!
 
-Demo API: https://robotsim.ronniepyne.com
+Demo API: http://robotsim.ronniepyne.com
+SSL Enabled HTTP API: https://infinite-everglades-63965.herokuapp.com
 
 ## Modules
 
