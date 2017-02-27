@@ -4,25 +4,20 @@ php:
   - 7.0
 
 before_script:
+  - echo "extension = mongo.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
   - phpenv config-rm xdebug.ini
   - cp .env.travis .env
   - composer self-update
   - composer install --no-interaction
   - php artisan key:generate
 
-before_install:
-  - echo "extension = mongo.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
-  
 script:
   - phpdbg -qrr vendor/bin/phpunit --coverage-clover=coverage.xml
   
 services:
-  - mysql
+  - mongodb
 
 cache:
   directories:
     - node_modules
     - vendor
-    
-env:
-  - TRAVIS_NODE_VERSION="4"
