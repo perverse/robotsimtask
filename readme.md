@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/perverse/robotsimtask.svg?branch=master)](https://travis-ci.org/perverse/robotsimtask)
+
 # Robot Controller Simulator Coding Task
 
 This is a Laravel App designed to meet the business requirements of a coding task. The following readme is written for linux (and somewhat OSX at a stretch), Windows users will have to extrapolate - sorry!
