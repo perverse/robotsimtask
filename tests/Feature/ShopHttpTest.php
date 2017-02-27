@@ -38,7 +38,8 @@ class ShopHttpTest extends TestCase
         ]);
 
         $robots->each(function($robot, $key) use ($shop) {
-            $shop->robots()->create($robot);
+            $robot_model = $shop->robots()->create($robot);
+            $robot_model->save();
         });
 
         $shop->save();
