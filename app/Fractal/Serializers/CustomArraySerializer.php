@@ -9,13 +9,13 @@
  * file that was distributed with this source code.
  */
 
-use League\Fractal\Serializer\SerializerAbstract;
+use League\Fractal\Serializer\SerializerAbstract as SerializerContract;
 
 use League\Fractal\Pagination\CursorInterface;
 use League\Fractal\Pagination\PaginatorInterface;
 use League\Fractal\Resource\ResourceInterface;
 
-class CustomArraySerializer extends SerializerAbstract
+class CustomArraySerializer extends SerializerContract
 {
     /**
      * Serialize a collection.
