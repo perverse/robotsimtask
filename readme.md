@@ -14,7 +14,7 @@ As with most web projects, I stand on the shoulders of giants. Outside of Larave
 
 ## Dependencies
 
-* PHP 5.6.4+ - Built and tested using PHP 7.0
+* PHP 7.0+ - Built and tested using PHP 7.0. This is so high to satisfy the requirement of the mongodb laravel driver - which leverages the new PHP MongoDB driver.
 * MongoDB PHP Driver
 
 ## Pre-Installation
