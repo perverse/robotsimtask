@@ -222,12 +222,12 @@ Cache-Control: no-cache
 ## Project Thoughts/Musings
 
 * I had to make a few assumptions to complete the task:
-** Robots *can* move into a spot that's about to be vacated - as the robots move in parallel, but cannot move into a spot that will be vacated - or that is occupied by a robot heading directly towards it (as they would have to move through each other). All other movement is permitted except;
-** Robots, when faced with a boundary/wall, will stop moving and wait for their next command that doesn't move them into a wall
+  * Robots *can* move into a spot that's about to be vacated - as the robots move in parallel, but cannot move into a spot that will be vacated - or that is occupied by a robot heading directly towards it (as they would have to move through each other). All other movement is permitted except;
+  * Robots, when faced with a boundary/wall, will stop moving and wait for their next command that doesn't move them into a wall
 * The ApiResponse pattern is of my own design. It's a work in progress, still rough around the edges, but if you want to look at the inner workings - the files are:
-** App\Services\ApiResponseFormatter - this is the main service that does the bulk of the work.
-** App\Containers\ApiResponse - This container object is returned by all methods of API-facing services. Gives a common container for formatting different interfaces.
-** App\Http\Middleware\ApiResponseJson - "After" middleware that catches ApiResponse objects and formats them to JSON using ApiResponseFormatter
+  * App\Services\ApiResponseFormatter - this is the main service that does the bulk of the work.
+  * App\Containers\ApiResponse - This container object is returned by all methods of API-facing services. Gives a common container for formatting different interfaces.
+  * App\Http\Middleware\ApiResponseJson - "After" middleware that catches ApiResponse objects and formats them to JSON using ApiResponseFormatter
 * I chose MongoDB as my data store because the nature of the data lent itself to a single document, and the overhead of handling certain robot lookup operations on the PHP side should be well made up for by the quick lookups and updates of Mongo at scale.
 * I have clear separation of concerns - the Controller layer is purely pipes data to services -> service layer is business logic layer -> repository layer is data logic. If it was nevessary to move back to an RDB, you'd only need to make some minor changes to the repositories and models.
 
