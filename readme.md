@@ -237,6 +237,12 @@ Cache-Control: no-cache
 * I have clear separation of concerns - the Controller layer purely pipes data to services -> service layer is business logic layer -> repository layer is data logic. If it was nevessary to move back to an RDB, you'd only need to make some minor changes to the repositories and models.
 * Mongo caused more issues than it was probably worth for this exercise, especially with testing.
 
+## Potential To-dos
+
+* Make shops configurations set up by CLI saveable to database
+* Expand HTTP API to include listing endpoints, update shop endpoints, etc
+* Unit testing on services as opposed to just interface tests
+
 ## License
 
 The MIT License (MIT)
