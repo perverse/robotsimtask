@@ -22,3 +22,19 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
         'remember_token' => str_random(10),
     ];
 });
+
+$factory->define(App\Models\Shop::class, function(Faker\Generator $faker){
+    return [
+        'width' => rand(1, 10),
+        'height' => rand(1, 10)
+    ];
+});
+
+$factory->define(App\Models\Robot::class, function(Faker\Generator $faker){
+    return [
+        'x' => rand(0, 9),
+        'y' => rand(0, 9),
+        'heading' => 'N',
+        'commands' => 'LMMM'
+    ];
+});
