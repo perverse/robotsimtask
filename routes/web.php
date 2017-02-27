@@ -12,5 +12,7 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    $parsedown = new \Parsedown();
+
+    return view('welcome', ['markdown' => $parsedown->text(file_get_contents(base_path('readme.md')))]);
 });
