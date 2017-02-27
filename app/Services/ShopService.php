@@ -7,6 +7,7 @@ use App\Repositories\Contracts\ShopRepositoryInterface;
 use Illuminate\Validation\Factory as Validator;
 use App\Containers\ApiResponse;
 use App\Services\SimulatorService;
+use App\Exceptions\Simulator\RobotCollisionException;
 
 class ShopService implements ShopServiceInterface
 {
@@ -27,6 +28,11 @@ class ShopService implements ShopServiceInterface
         $this->sim = $sim;
     }
 
+    /**
+     * Create new shop in database
+     *
+     * @return App\Containers\ApiResponse
+     */
     public function create(array $data)
     {
         $validator = $this->validator->make($data, [
@@ -43,6 +49,11 @@ class ShopService implements ShopServiceInterface
         }
     }
 
+    /**
+     * Find shop by ID
+     *
+     * @return App\Containers\ApiResponse
+     */
     public function find($id)
     {
         $shop = $this->shop->find($id);
@@ -54,6 +65,11 @@ class ShopService implements ShopServiceInterface
         }
     }
 
+    /**
+     * Delete shop by ID
+     *
+     * @return App\Containers\ApiResponse
+     */
     public function destroy($id)
     {
         $this->shop->delete($id);
@@ -61,14 +77,23 @@ class ShopService implements ShopServiceInterface
         return $this->response->make(['success' => true]);
     }
 
+    /**
+     * Simulate shop, save new state of shop, return new state of shop
+     *
+     * @return App\Containers\ApiResponse
+     */
     public function simulate($id)
     {
         $shop = $this->shop->find($id);
         $service = $this;
 
         if ($shop) {
-            $shop_arr = $shop->toArray();
-            $new_shop = $this->sim->simulate($shop->toArray());
+            try {
+                $new_shop = $this->sim->simulate($shop->toArray());
+            } catch (RobotCollisionException $e) {
+                return $this->response->make(['success' => 'false', 'errors' => [$e->getMessage()]]);
+            }
+
             $new_robots = collect($new_shop['robots']);
 
             $shop->robots->each(function($robot) use (&$new_robots, &$shop, &$service){

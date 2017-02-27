@@ -8,6 +8,11 @@ use Illuminate\Support\Collection;
 
 class SimulatorService implements SimulatorServiceInterface
 {
+    /**
+     * Compass helps me keep track of robot orientation
+     *
+     * @var array
+     */
     protected $compass = [
         0 => 'N',
         1 => 'E',
@@ -15,7 +20,18 @@ class SimulatorService implements SimulatorServiceInterface
         3 => 'W'
     ];
 
+    /**
+     * Inverse compass for reverse lookups, constructed on the fly
+     *
+     * @var array
+     */
     protected $inverse_compass = [];
+
+    /**
+     * For doing lookups on the "ooposite direction". could probably generate this OTF too, but no need.
+     *
+     * @var array
+     */
     protected $compass_opposites = [
         'N' => 'S',
         'E' => 'W',
@@ -23,6 +39,11 @@ class SimulatorService implements SimulatorServiceInterface
         'W' => 'E'
     ];
 
+    /**
+     * Config for the grid we're working on
+     *
+     * @var array
+     */
     protected $grid = [
         'x' => [
             'min' => 0,
@@ -34,6 +55,11 @@ class SimulatorService implements SimulatorServiceInterface
         ]
     ];
 
+    /**
+     * Get maximum number of simulation passes for given collection of robots
+     *
+     * @return integer
+     */
     protected function getMaxPasses(Collection $robots)
     {
         return $robots->map(function($robot, $key){
@@ -41,12 +67,22 @@ class SimulatorService implements SimulatorServiceInterface
         })->max();
     }
 
+    /**
+     * Inverse compass for reverse lookups, constructed on the fly
+     *
+     * @return null
+     */
     protected function setup($shop)
     {
         $this->setupGrid($shop);
         $this->setupCompass();
     }
 
+    /**
+     * Setup grid dimensions from given shop
+     *
+     * @return null
+     */
     protected function setupGrid($shop)
     {
         $this->grid = [
@@ -61,11 +97,21 @@ class SimulatorService implements SimulatorServiceInterface
         ];
     }
 
+    /**
+     * Setup inverse compass lookups
+     *
+     * @return null
+     */
     protected function setupCompass()
     {
         $this->inverse_compass = array_flip($this->compass);
     }
 
+    /**
+     * The "action" method - triggers and steers a simulation on injected shop
+     *
+     * @return array
+     */
     public function simulate(array $shop)
     {
         $this->setup($shop);
@@ -130,11 +176,22 @@ class SimulatorService implements SimulatorServiceInterface
         return $shop;
     }
 
+    /**
+     * Get command for given robot and simulation pass
+     *
+     * @var string
+     */
     public function getRobotCommand($robot, $pass)
     {
         return substr($robot['commands'], $pass - 1, 1);
     }
 
+    /**
+     * Calculate new position and orientation of injected robot given a command
+     * and return robot in new position
+     *
+     * @return array
+     */
     public function getNewRobotPosition($robot, $command)
     {
         $sim = $this;
@@ -204,6 +261,11 @@ class SimulatorService implements SimulatorServiceInterface
         }
     }
 
+    /**
+     * Gets opposing heading - used to calculate head-on collisions
+     *
+     * @return string
+     */
     protected function getOppositeHeading($heading)
     {
         return $this->compass_opposites[$heading];

@@ -20,15 +20,26 @@ class RobotService implements RobotServiceInterface
         $this->validator = $validator;
     }
 
+    /**
+     * Validator for creating/updating robot objects
+     *
+     * @return Illuminate\Validation\Validator
+     */
     public function getValidator($data)
     {
         return $this->validator->make($data, [
             'x' => 'required|numeric',
             'y' => 'required|numeric',
-            'heading' => 'required|in:N,E,S,W'
+            'heading' => 'required|in:N,E,S,W',
+            'commands' => 'required|regex:/^[LRM]+$/'
         ]);
     }
 
+    /**
+     * Create new robot in a shop
+     *
+     * @return App\Containers\ApiResponse
+     */
     public function create($shop_id, $data)
     {
         $validator = $this->getValidator($data);
@@ -48,6 +59,11 @@ class RobotService implements RobotServiceInterface
         }
     }
 
+    /**
+     * Update a robot object
+     *
+     * @return App\Containers\ApiResponse
+     */
     public function update($shop_id, $robot_id, $data)
     {
         $validator = $this->getValidator($data);
@@ -81,6 +97,11 @@ class RobotService implements RobotServiceInterface
         }
     }
 
+    /**
+     * Delete a robot object
+     *
+     * @return App\Containers\ApiResponse
+     */
     public function destroy($shop_id, $robot_id)
     {
         $shop = $this->shop->find($shop_id);

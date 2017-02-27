@@ -27,7 +27,7 @@ Route::group(['namespace' => 'Api'], function()
         {
             Route::get('/', ['uses' => 'ShopController@find', 'as' => 'api.shop.find']);
             Route::delete('/', ['uses' => 'ShopController@destroy', 'as' => 'api.shop.destroy']);
-            Route::get('/execute', ['uses' => 'ShopController@simulate', 'as' => 'api.shop.simulate']);
+            Route::post('/execute', ['uses' => 'ShopController@simulate', 'as' => 'api.shop.simulate']);
 
             Route::group(['prefix' => 'robot'], function(){
                 Route::post('/', ['uses' => 'ShopRobotController@create', 'as' => 'api.shop.robot.create']);

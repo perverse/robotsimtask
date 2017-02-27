@@ -24,6 +24,12 @@ class ApiResponseFormatter
         $this->fractal->setSerializer(new \App\Fractal\Serializers\CustomDataArraySerializer);
     }
 
+    /**
+     * Factory method to make formatter instances
+     *
+     * @todo make this run on non-concrete type
+     * @return App\Services\ApiResponseFormatter
+     */
     public function make(ServiceResponse $service_response)
     {
         $formatter = $this->app->make(self::class);
@@ -32,6 +38,12 @@ class ApiResponseFormatter
         return $formatter;
     }
 
+    /**
+     * Sets the ServiceResponse/ApiResponse container to use for this transform
+     * Returns itself for chaining purposes
+     *
+     * @return App\Services\ApiResponseFormatter
+     */
     public function setServiceResponse(ServiceResponse $service_response)
     {
         $this->service_response = $service_response;
@@ -39,11 +51,21 @@ class ApiResponseFormatter
         return $this;
     }
 
+    /**
+     * Getter for the current ApiResponse container
+     *
+     * @return App\Containers\ApiResponse
+     */
     public function getServiceResponse()
     {
         return $this->service_response;
     }
 
+    /**
+     * Recursively find all eager-loaded relationships on the given model. Caution: Dragons.
+     *
+     * @return array
+     */
     protected function getLoadedRelationshipsRecursive($model, $loaded_relations, $return_array=[], $parent_nesting='')
     {
         foreach ($loaded_relations as $relationship) {
@@ -94,6 +116,11 @@ class ApiResponseFormatter
         return $return_array;
     }
 
+    /**
+     * Find a transformer to use for currently provided model. Caution: More dragons
+     *
+     * @return array
+     */
     protected function getTransformer()
     {
         if ($transformer = $this->service_response->getTransformer()) {
@@ -151,6 +178,11 @@ class ApiResponseFormatter
         return $this->app->make("App\Transformers\FallbackTransformer");
     }
 
+    /**
+     * Formatting the json response
+     *
+     * @return array
+     */
     protected function organiseFractalData($result)
     {
         $result[$this->service_response->getResultIndex()] = $result['data'];
@@ -159,6 +191,11 @@ class ApiResponseFormatter
         return $result;
     }
 
+    /**
+     * Some auto-pagination bootstrapping. DRAGONS.
+     *
+     * @return array
+     */
     protected function paginatorData()
     {
         $resource = new FractalCollection($this->service_response->getOriginalData(), $this->getTransformer(), 'result');
@@ -169,6 +206,11 @@ class ApiResponseFormatter
         return $result;
     }
 
+    /**
+     * Bootstrapping for collection-based data. Just... seriously, this is all Dragons. This class is best observed and not touched.
+     *
+     * @return array
+     */
     protected function collectionData()
     {
         $resource = new FractalCollection($this->service_response->getOriginalData(), $this->getTransformer(), 'result');
@@ -177,6 +219,11 @@ class ApiResponseFormatter
         return $result;
     }
 
+    /**
+     * Same bootstrapping as above but for single items.
+     *
+     * @return array
+     */
     protected function itemData()
     {
         $resource = new FractalItem($this->service_response->getOriginalData(), $this->getTransformer(), 'result');
@@ -185,6 +232,11 @@ class ApiResponseFormatter
         return $result;
     }
 
+    /**
+     * Format an ApiResponse object into a json response.
+     *
+     * @return array
+     */
     public function toJsonResponse()
     {
         if ($this->service_response->getSuccess()) {
