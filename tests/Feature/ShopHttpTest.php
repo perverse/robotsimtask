@@ -106,18 +106,16 @@ class ShopHttpTest extends TestCase
 
         $response = $this->json('POST', '/api/shop/' . $shop->_id . '/execute');
 
-        var_dump($shop->robots);
-
         $response->assertStatus(200)
-                 ->assertExactJson([
+                 ->assertJson([
                      'status' => 'ok',
                      'result' => [
                          'id' => $shop->_id,
                          'width' => $shop->width,
                          'height' => $shop->height,
                          'robots' => [
-                             ['x' => 3, 'y' => 0, 'heading' => 'E', 'commands' => 'LMMM', 'id' => $shop->robots[0]->_id],
-                             ['x' => 1, 'y' => 4, 'heading' => 'W', 'commands' => 'LMMM', 'id' => $shop->robots[1]->_id]
+                             ['x' => 3, 'y' => 0, 'heading' => 'E', 'commands' => 'LMMM', 'id' => true],
+                             ['x' => 1, 'y' => 4, 'heading' => 'W', 'commands' => 'LMMM', 'id' => true]
                          ]
                      ]
                  ]);
