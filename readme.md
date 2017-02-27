@@ -230,7 +230,8 @@ Cache-Control: no-cache
   * App\Containers\ApiResponse - This container object is returned by all methods of API-facing services. Gives a common container for formatting different interfaces.
   * App\Http\Middleware\ApiResponseJson - "After" middleware that catches ApiResponse objects and formats them to JSON using ApiResponseFormatter
 * I chose MongoDB as my data store because the nature of the data lent itself to a single document, and the overhead of handling certain robot lookup operations on the PHP side should be well made up for by the quick lookups and updates of Mongo at scale.
-* I have clear separation of concerns - the Controller layer is purely pipes data to services -> service layer is business logic layer -> repository layer is data logic. If it was nevessary to move back to an RDB, you'd only need to make some minor changes to the repositories and models.
+* I have clear separation of concerns - the Controller layer purely pipes data to services -> service layer is business logic layer -> repository layer is data logic. If it was nevessary to move back to an RDB, you'd only need to make some minor changes to the repositories and models.
+* Mongo caused more issues than it was probably worth for this exercise, especially with testing.
 
 ## License
 
