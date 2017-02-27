@@ -16,7 +16,7 @@ class ShopTestHttp extends TestCase
      *
      * @return void
      */
-    public function testPostShop()
+    public function testPostshop()
     {
         $response = $this->json('POST', '/api/shop', [
             'width' => 5,
