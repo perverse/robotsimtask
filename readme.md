@@ -13,6 +13,7 @@ As with most web projects, I stand on the shoulders of giants. Outside of Larave
 * coduo/php-humanizer - https://github.com/coduo/php-humanizer - Excellent little string/number/other formatting library.
 * jenssegers/mongodb - https://github.com/jenssegers/laravel-mongodb - Eloquent driver for MongoDB.
 * league/fractal - http://fractal.thephpleague.com/ - Insane library for consistent formatting of data from API's. Provides my transform layer, I really really love this lib.
+* erusev/parsedown - https://github.com/erusev/parsedown - Nice little library for parsing markdown in PHP. A shame it isn't PSR-4 namespaced and packaged.
 
 ## Dependencies
 
