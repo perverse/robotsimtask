@@ -2,9 +2,18 @@
 
 This is a Laravel App designed to meet the business requirements of a coding task. The following readme is written for linux (and somewhat OSX at a stretch), Windows users will have to extrapolate - sorry!
 
+## Modules
+
+As with most web projects, I stand on the shoulders of giants. Outside of Laravel, I used the following PHP modules in my build (and props to the authors):
+
+* bosnadev/repositories - https://github.com/bosnadev/repository - Fantastic repository pattern wrapper for Eloquent.
+* coduo/php-humanizer - https://github.com/coduo/php-humanizer - Excellent little string/number/other formatting library.
+* jenssegers/mongodb - https://github.com/jenssegers/laravel-mongodb - Eloquent driver for MongoDB.
+* league/fractal - http://fractal.thephpleague.com/ - Insane library for consistent formatting of data from API's. Provides my transform layer, I really really love this lib.
+
 ## Dependencies
 
-* PHP 5.4+ - Built and tested using PHP 7.0
+* PHP 5.6.4+ - Built and tested using PHP 7.0
 * MongoDB PHP Driver
 
 ## Pre-Installation
@@ -75,7 +84,6 @@ GET /api/shop/58b3942391d5ef7de425e7e2 HTTP/1.1
 Host: vhost.url
 Content-Type: application/x-www-form-urlencoded
 Cache-Control: no-cache
-
 ```
 #### Example Response
 ```
@@ -104,7 +112,6 @@ DELETE /api/shop/58b3942391d5ef7de425e7e2 HTTP/1.1
 Host: vhost.url
 Content-Type: application/x-www-form-urlencoded
 Cache-Control: no-cache
-
 ```
 #### Example Response
 ```
@@ -122,7 +129,6 @@ Content-Type: application/x-www-form-urlencoded
 Cache-Control: no-cache
 
 x=5&y=5&heading=N@commands=LMM
-
 ```
 #### Example Response
 ```
@@ -147,7 +153,6 @@ Content-Type: application/x-www-form-urlencoded
 Cache-Control: no-cache
 
 x=6&y=6&heading=S@commands=RLRLRMMMM
-
 ```
 #### Example Response
 ```
@@ -170,7 +175,6 @@ DELETE /api/shop/58b3942391d5ef7de425e7e2/robot/58b395e791d5ef7df025c262 HTTP/1.
 Host: vhost.url
 Content-Type: application/x-www-form-urlencoded
 Cache-Control: no-cache
-
 ```
 #### Example Response
 ```
@@ -186,7 +190,6 @@ POST /api/shop/58b3942391d5ef7de425e7e2/execute HTTP/1.1
 Host: vhost.url
 Content-Type: application/x-www-form-urlencoded
 Cache-Control: no-cache
-
 ```
 #### Example Response
 ```
@@ -218,7 +221,15 @@ Cache-Control: no-cache
 
 ## Project Thoughts/Musings
 
-* Musings here
+* I had to make a few assumptions to complete the task:
+..* Robots *can* move into a spot that's about to be vacated - as the robots move in parallel, but cannot move into a spot that will be vacated - or that is occupied by a robot heading directly towards it (as they would have to move through each other). All other movement is permitted except;
+..* Robots, when faced with a boundary/wall, will stop moving and wait for their next command that doesn't move them into a wall
+* The ApiResponse pattern is of my own design. It's a work in progress, still rough around the edges, but if you want to look at the inner workings - the files are:
+..* App\Services\ApiResponseFormatter - this is the main service that does the bulk of the work.
+..* App\Containers\ApiResponse - This container object is returned by all methods of API-facing services. Gives a common container for formatting different interfaces.
+..* App\Http\Middleware\ApiResponseJson - "After" middleware that catches ApiResponse objects and formats them to JSON using ApiResponseFormatter
+* I chose MongoDB as my data store because the nature of the data lent itself to a single document, and the overhead of handling certain robot lookup operations on the PHP side should be well made up for by the quick lookups and updates of Mongo at scale.
+* I have clear separation of concerns - the Controller layer is purely pipes data to services -> service layer is business logic layer -> repository layer is data logic. If it was nevessary to move back to an RDB, you'd only need to make some minor changes to the repositories and models.
 
 ## License
 
