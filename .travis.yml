@@ -6,6 +6,7 @@ php:
 before_script:
   - phpenv config-rm xdebug.ini
   - phpenv config-add mongophpconfig.ini
+  - mongo mydb_test --eval 'db.addUser("travis", "travis");'
   - cp .env.travis .env
   - composer self-update
   - composer install --no-interaction
