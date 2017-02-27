@@ -1,23 +1,22 @@
 language: php
-
 php:
-  - 7.0
-
+- 7.0
 before_script:
-  - phpenv config-rm xdebug.ini
-  - phpenv config-add mongophpconfig.ini
-  - cp .env.travis .env
-  - composer self-update
-  - composer install --no-interaction
-  - php artisan key:generate
-
+- phpenv config-rm xdebug.ini
+- phpenv config-add mongophpconfig.ini
+- cp .env.travis .env
+- composer self-update
+- composer install --no-interaction
+- php artisan key:generate
 script:
-  - phpdbg -qrr vendor/bin/phpunit --coverage-clover=coverage.xml
-  
+- phpdbg -qrr vendor/bin/phpunit --coverage-clover=coverage.xml
 services:
-  - mongodb
-
+- mongodb
 cache:
   directories:
-    - node_modules
-    - vendor
+  - node_modules
+  - vendor
+deploy:
+  api_key:
+    secure: BexDE2DdDHKKt0mX9nGs6bAnwNE8e198RE89nyn1y8IYUp+yhjNwgx1CTdX8bnMaIj3jz717e5UntKiEgf+vhd4a+u82SdXNMrTlWu2ZSDbrAb3RNLH0awSWKQ71OXXP0YZShF4mphKO7UZmfvkGpL7asRnyBqACB/nJYoBi/QBnKxeUYBvC+xezusMhLxHUmUc6gzv4ornifiw93XhidiOL9D7BuM1ZBJci+raZGrurovRQ8XvyK1t5rXNydYmymHs+Qa/iTPC3JHCHILOEzELlpV993QiPLYa+lRoCytLQRy+x2QeAdjRepF7J85ddbg8smCLkwyKxj+nfBwsJU+xoVpBsrHvlZNOYeknp79vy39cIf72jHfJ+1NvY7ssnaOEs/DtApE03SIMF6rGJ/KV6vqz2Bh1fTtwPedFtxOXaQ4Tl48ZOYsgXQnzIshQzcMI1dIjP/fRMfdPLD23xJoHxCybz8R/azi33Sbl1daIP5szpnFRUlCoAWFLKMEtua0hvMkKyomMGu2KJAScYcJ1+dkllLTar+lLdOSf//WA54gJtFp9UHwiW+Ee+ghcYYeS+0ur+sEdnOWG8kfcJ5wbR3zvdhcpvWlR1nooTSwVsMGNS3N/9mwxZ4XP0wkkPk9Wi7U4+jgYHgtHGaHHI6NCb6o4FZHIQlJTRJvrI08o=
+  app: infinite-everglades-63965

@@ -3,6 +3,8 @@
 
 This is a Laravel App designed to meet the business requirements of a coding task. The following readme is written for linux (and somewhat OSX at a stretch), Windows users will have to extrapolate - sorry!
 
+Demo API: https://robotsim.ronniepyne.com
+
 ## Modules
 
 As with most web projects, I stand on the shoulders of giants. Outside of Laravel, I used the following PHP modules in my build (and props to the authors):
