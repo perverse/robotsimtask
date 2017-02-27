@@ -9,8 +9,6 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ShopHttpTest extends TestCase
 {
-    use DatabaseTransactions;
-
     /**
      * Test creation of shop through CLI interface
      *
