@@ -45,8 +45,8 @@ As with most web projects, I stand on the shoulders of giants. Outside of Larave
 * **DB_HOST** - IP or Hostname of your MongoDB database server. [Defaults to 'localhost']
 * **DB_PORT** - Port of your MongoDB database server. [Defaults to '27017']
 * **DB_DATABASE** - Database name of your MongoDB database. [Defaults to 'test']
-* **DB_USER** - Username of the MongoDB user that has permission to the MONGO_DB_NAME database. Can be left blank if Mongo isn't configured for auth.
-* **DB_PASS** - Corresponding password for your MongoDB user. Should be left blank is MONGO_DB_USER is left blank.
+* **DB_USERNAME** - Username of the MongoDB user that has permission to the MONGO_DB_NAME database. Can be left blank if Mongo isn't configured for auth.
+* **DB_PASSWORD** - Corresponding password for your MongoDB user. Should be left blank is MONGO_DB_USER is left blank.
 
 ## Usage - CLI
 
