@@ -10,7 +10,6 @@
  */
 
 use League\Fractal\Serializer\SerializerAbstract as SerializerContract;
-
 use League\Fractal\Pagination\CursorInterface;
 use League\Fractal\Pagination\PaginatorInterface;
 use League\Fractal\Resource\ResourceInterface;
@@ -45,6 +44,11 @@ class CustomArraySerializer extends SerializerContract
     public function item($resourceKey, array $data)
     {
         return $data;
+    }
+
+    public function null()
+    {
+        return null;
     }
 
     /**
